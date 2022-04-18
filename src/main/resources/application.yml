@@ -4,6 +4,18 @@ spring:
     username: root
     password: root
 
+  mail:
+    host: smtp.gmail.com
+    username: 2021JavaForTest@gmail.com
+    password: forTest2021
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 books:
   upload:
-    path: C:\Users\User\IdeaProjects\onlineLibrary\upload
+    path: C:\Users\User\IdeaProjects\onlineLibrary\upload\

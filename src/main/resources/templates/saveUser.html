@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Save User</title>
+</head>
+<body>
+Add User
+<!--<form action="/user/add" method="post">-->
+<!--    <input th:if="${user.get() != null}" type="hidden" th:value="${user.get().id}" name="id">-->
+<!--    Name: <input type="text" name="name" th:value="${user.get()== null} ? '' : ${user.get().name}"/> <br>-->
+<!--    surname:<input type="text" name="surname" th:value="${user.get() == null} ? '' : ${user.get().surname}"/><br>-->
+<!--    gender:<select name="gender">-->
+<!--    <option th:value=" ${user.get().getGender().MALE}" >MALE</option>-->
+<!--    <option th:value=" ${user.get().getGender().FEMALE}" >FEMALE</option>-->
+<!--</select><br>-->
+<!--    phone:<input type="text" name="phone" th:value="${user.get() == null} ? '' : ${user.get().phone}"/><br>-->
+<!--    email:<input type="text" name="email" th:value="${user.get() == null} ? '' : ${user.get().email}"/><br>-->
+<!--    password: <input type="password" name="password" th:value="${user.get() == null} ? '' : ${user.get().password}"/><br>-->
+<!--    <input type="submit" value="save">-->
+<!--</form>-->
+<form action="/user/add" method="post">
+
+    Name: <input type="text" name="name"/> <br>
+    surname:<input type="text" name="surname"/><br>
+    gender:<select name="gender">
+    <option value="MALE">MALE</option>
+    <option value="FEMALE" >FEMALE</option>
+</select><br>
+    phone:<input type="text" name="phone"/><br>
+    email:<input type="text" name="email"/><br>
+    password: <input type="password" name="password"/><br>
+    <input type="submit" value="save">
+</form>
+</body>
+</html>
