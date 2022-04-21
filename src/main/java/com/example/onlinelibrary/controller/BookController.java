@@ -1,8 +1,7 @@
 package com.example.onlinelibrary.controller;
 
 import com.example.onlinelibrary.dto.CreateBookRequest;
-import com.example.onlinelibrary.entity.Book;
-import com.example.onlinelibrary.entity.User;
+import com.example.onlinelibrary.entity.*;
 import com.example.onlinelibrary.security.CurrentUser;
 import com.example.onlinelibrary.service.AuthorService;
 import com.example.onlinelibrary.service.BookService;
@@ -31,14 +30,15 @@ public class BookController {
 
 
     @GetMapping("/books")
-    public String itemsPage(ModelMap map) {
+    public String booksPage(ModelMap map) {
         List<Book> books = bookService.findAll();
         map.addAttribute("books", books);
+
         return "books";
     }
 
     @GetMapping("/books/byUser/{id}")
-    public String itemsByUserPage(ModelMap map, @PathVariable("id") int id) {
+    public String booksByUserPage(ModelMap map, @PathVariable("id") int id) {
         User user = userService.findById(id);
         List<Book> books = bookService.findAllByUser(user);
         map.addAttribute("books", books);
@@ -47,11 +47,10 @@ public class BookController {
 
 
     @GetMapping("/myBooks")
-    public String myItems(ModelMap map, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String myBooks(ModelMap map, @AuthenticationPrincipal CurrentUser currentUser) {
         User user = currentUser.getUser();
         List<Book> books = bookService.findAllByUser(user);
         map.addAttribute("books", books);
-
         return "books";
     }
 
@@ -61,12 +60,11 @@ public class BookController {
         map.addAttribute("categories", categoryService.findAll());
         map.addAttribute("authors",authorService.findAll());
         map.addAttribute("user", user);
-        map.addAttribute("book",bookService.findBookByUserId(user.getId()));
         return "saveBook";
     }
 
     @PostMapping("/books/add")
-    public String addItem(@ModelAttribute CreateBookRequest createBookRequest,
+    public String addBook(@ModelAttribute CreateBookRequest createBookRequest,
                           @RequestParam("pictures") MultipartFile[] uploadedFiles,
                           @AuthenticationPrincipal CurrentUser currentUser) {
         Book book = mapper.map(createBookRequest, Book.class);

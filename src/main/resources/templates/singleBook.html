@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <a href="/books">Back</a>
+    <a href="/books/add">Add Book</a>
+    Single Item:
+    <div style="width: 205px; float: left">
+        <div>
+            <img th:if="${book.bookPictures == null || book.bookPictures.isEmpty()}" src="/777.jpg" width="300"/>
+
+            <ul th:if="${book.bookPictures != null && !book.bookPictures.isEmpty()}">
+                <li th:each="picture: ${book.bookPictures}"><img th:src="@{/getImage(picName=${picture.name})}"
+                                                                 width="200"/>
+                </li>
+            </ul>
+
+
+        </div>
+
+        <div>
+            Title: <span th:text="${book.title}"></span><br>
+            Description: <span th:text="${book.description}"></span><br>
+            Edition: <span th:text="${book.edition}"></span><br>
+        </div>
+        Author:
+        <div>
+            <span th:each="author: ${book.authors}"
+                  th:text="${author.getName() + ' '+ author.getSurname() + ' '}"></span><br>
+        </div>
+        Category:
+        <div>
+            <span th:each="category: ${book.categories}" th:text="${category.name + ' '}"></span><br>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

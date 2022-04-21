@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -23,14 +22,19 @@ public class Book {
     private String title;
     private String description;
     private String edition;
-    private Date editionDate;
+
     @ManyToMany
     private List<Category> categories;
+
     @ManyToOne
     private User user;
+
     @ManyToMany
     private List<Author> authors;
-    private String bookPicture;
+
+    @OneToMany(mappedBy = "book")
+    private List<BookPicture> bookPictures;
+
     private String bookPdf;
 
 }

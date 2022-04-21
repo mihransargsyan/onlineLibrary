@@ -12,7 +12,6 @@ Save Book:
     title: <input type="text" name="title" th:value="${book == null} ? '' : ${book.title}"/> <br>
     description:<textarea name="description" th:text="${book == null} ? '' : ${book.description}"></textarea><br>
     edition: <input type="text" name="edition" th:value="${book == null} ? '' : ${book.edition}"/> <br>
-    edition date: <input type="date" name="edition date" th:value="${book == null} ? '' : ${book.editionDate}"/> <br>
     Categories:
     <select name="categories[]" multiple>
         <option th:each="cat: ${categories}" th:text="${cat.name}" th:value="${cat.id}"></option>

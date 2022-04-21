@@ -1,11 +1,9 @@
 package com.example.onlinelibrary.service;
 
 
-import com.example.onlinelibrary.entity.Author;
-import com.example.onlinelibrary.entity.Book;
-import com.example.onlinelibrary.entity.Category;
-import com.example.onlinelibrary.entity.User;
+import com.example.onlinelibrary.entity.*;
 import com.example.onlinelibrary.repository.AuthorRepository;
+import com.example.onlinelibrary.repository.BookPicturesRepository;
 import com.example.onlinelibrary.repository.BookRepository;
 import com.example.onlinelibrary.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +23,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final AuthorRepository authorRepository;
+    private final BookPicturesRepository bookPicturesRepository;
 
     @Value("${books.upload.path}")
     private String imagePath;
@@ -36,7 +35,7 @@ public class BookService {
         book.setCategories(categoriesFromDB);
         book.setAuthors(authorsFromDB);
         bookRepository.save(book);
-     //   saveBookImages(uploadedFiles, book);
+        saveBookImages(uploadedFiles, book);
         return book;
     }
 
@@ -72,22 +71,6 @@ public class BookService {
         return categories;
     }
 
-//    private void saveBookImages(MultipartFile[] uploadedFiles, Book book) throws IOException {
-//        if (uploadedFiles.length != 0) {
-//            for (MultipartFile uploadedFile : uploadedFiles) {
-//                String fileName = System.currentTimeMillis() + "_" + uploadedFile.getOriginalFilename();
-//                File newFile = new File(imagePath + fileName);
-//                uploadedFile.transferTo(newFile);
-//                ItemImage itemImage = ItemImage.builder()
-//                        .name(fileName)
-//                        .item(item)
-//                        .build();
-//
-//                itemImageRepository.save(itemImage);
-//            }
-//
-//        }
-//    }
 
     private List<Author> getAuthorsFromRequest(List<Integer> authorsIds) {
         List<Author> authors = new ArrayList<>();
@@ -95,6 +78,23 @@ public class BookService {
             authors.add(authorRepository.getById(author));
         }
         return authors;
+    }
+
+        private void saveBookImages(MultipartFile[] uploadedFiles, Book book) throws IOException {
+        if (uploadedFiles.length != 0) {
+            for (MultipartFile uploadedFile : uploadedFiles) {
+                String fileName = System.currentTimeMillis() + "_" + uploadedFile.getOriginalFilename();
+                File newFile = new File(imagePath + fileName);
+                uploadedFile.transferTo(newFile);
+                BookPicture bookPicture = BookPicture.builder()
+                        .name(fileName)
+                        .book(book)
+                        .build();
+
+                bookPicturesRepository.save(bookPicture);
+            }
+
+        }
     }
 
 }
