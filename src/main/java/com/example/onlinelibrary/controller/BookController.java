@@ -33,7 +33,6 @@ public class BookController {
     public String booksPage(ModelMap map) {
         List<Book> books = bookService.findAll();
         map.addAttribute("books", books);
-
         return "books";
     }
 
@@ -65,7 +64,7 @@ public class BookController {
 
     @PostMapping("/books/add")
     public String addBook(@ModelAttribute CreateBookRequest createBookRequest,
-                          @RequestParam("pictures") MultipartFile[] uploadedFiles,
+                          @RequestParam("pictures") MultipartFile [] uploadedFiles,
                           @AuthenticationPrincipal CurrentUser currentUser) {
         Book book = mapper.map(createBookRequest, Book.class);
         try {

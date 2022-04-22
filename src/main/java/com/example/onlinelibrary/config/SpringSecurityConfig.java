@@ -14,10 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsImpl userDetails;
+    private  UserDetailsImpl userDetails;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private   PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -29,15 +29,18 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET,"/addUser").permitAll()
+                .antMatchers(HttpMethod.GET,"/user/add").permitAll()
                 .antMatchers(HttpMethod.POST,"/user/add").permitAll()
                 .antMatchers(HttpMethod.GET,"/user/activate").permitAll()
+                .antMatchers(HttpMethod.GET,"/user/edit/{id}").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/user/delete/{id}").hasAnyAuthority(Role.ADMIN.name())
                 .antMatchers(HttpMethod.GET,"/books").permitAll()
                 .antMatchers(HttpMethod.POST,"/books").permitAll()
+                .antMatchers(HttpMethod.GET,"/books/{id}").permitAll()
+                .antMatchers(HttpMethod.POST,"/books/{id}").permitAll()
                 .antMatchers("/books/add").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
-                .antMatchers("/deleteUser/{id}").hasAnyAuthority(Role.ADMIN.name())
-                .anyRequest().authenticated();
-
+                .anyRequest().permitAll();
+           //     .anyRequest().authenticated();
     }
 
     @Override

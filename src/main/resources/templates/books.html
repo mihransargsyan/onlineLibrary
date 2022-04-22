@@ -2,26 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Books page</title>
+    <title>Գրքեր</title>
 </head>
 <body>
 
 <div>
-    <a href="/books/add">Add Book</a>
+    <a href="/books/add">Ավելացնել գիրք</a>
     <a th:each="book: ${books}" th:href="@{'/books/' + ${book.id}}">
         <div style="width: 205px; float: left">
             <div>
-                <img th:if="${book.bookPictures != null && !book.bookPictures.isEmpty()}" th:src="@{/getImage(picName=${book.bookPictures.get(0)})}" width="100" height="100"/>
-                <img th:if="${book.bookPictures == null || book.bookPictures.isEmpty()}" src="/777.jpg" width="100" height="100"/>
+               <img th:if="${book.bookImages != null && !book.bookImages.isEmpty()}" th:src="@{/getImage(picName=${book.bookImages.get(0).name})}" width="100" height="100"/>
+                <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg" width="100" height="100"/>
             </div>
 
             <div>
-                Author: <span th:each="author: ${book.getAuthors()}" th:text="${author.name} + ' '+ ${author.surname} + ' '" ><br></span>
+                Հեղինակ: <span th:each="author: ${book.getAuthors()}" th:text="${author.name} + ' '+ ${author.surname} + ' '" ><br></span>
             </div>
 
             <div>
-                Title: <span th:text="${book.title}"></span><br>
-                Edition: <span th:text="${book.edition}"></span>
+                Վերնագիր: <span th:text="${book.title}"></span><br>
+                Հրատարակչություն: <span th:text="${book.edition}"></span>
             </div>
 
         </div>

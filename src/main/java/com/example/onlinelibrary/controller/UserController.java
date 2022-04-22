@@ -1,16 +1,17 @@
 package com.example.onlinelibrary.controller;
 
 import com.example.onlinelibrary.entity.User;
+import com.example.onlinelibrary.security.CurrentUser;
 import com.example.onlinelibrary.service.MailService;
 import com.example.onlinelibrary.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,13 +23,7 @@ public class UserController {
     private final UserService userService;
     private final MailService mailService;
 
-    @GetMapping("/deleteUser/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
-        userService.deleteById(id);
-        return "redirect:/";
-    }
-
-    @GetMapping("/addUser")
+    @GetMapping("/user/add")
     public String addUserPage() {
         return "saveUser";
     }
@@ -36,15 +31,14 @@ public class UserController {
     @PostMapping("/user/add")
     public String addUser(@ModelAttribute User user,
                           ModelMap map, Locale locale) throws MessagingException {
-
         user.setActive(false);
         user.setToken(UUID.randomUUID().toString());
         user.setTokenCreatedDate(LocalDateTime.now());
-
         userService.save(user);
         mailService.sendHtmlEmail(user.getEmail(),
                 "Welcome " + user.getSurname(),
-                user, " http://localhost:8080/user/activate?token=" + user.getToken(), "verifyTemplate", locale);
+                user, " http://localhost:8080/user/activate?token=" + user.getToken(),
+                "verifyTemplate", locale);
         return "redirect:/";
     }
 
@@ -60,7 +54,6 @@ public class UserController {
             map.addAttribute("message", "User already active!");
             return "activateUser";
         }
-
         userFromDb.setActive(true);
         userFromDb.setToken(null);
         userFromDb.setTokenCreatedDate(null);
@@ -70,11 +63,17 @@ public class UserController {
     }
 
 
-    @GetMapping("/editUser/{id}")
+    @GetMapping("/user/edit/{id}")
     public String editUserPage(ModelMap map,
                                @PathVariable("id") int id) {
         map.addAttribute("user", userService.findById(id));
         return "saveUser";
-
     }
+
+    @GetMapping("/user/delete/{id}")
+    public String deleteUser(@PathVariable("id") int id) {
+        userService.deleteById(id);
+        return "redirect:/";
+    }
+
 }

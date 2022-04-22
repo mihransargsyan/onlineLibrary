@@ -33,7 +33,7 @@ public class Book {
     private List<Author> authors;
 
     @OneToMany(mappedBy = "book")
-    private List<BookPicture> bookPictures;
+    private List<BookImage> bookImages;
 
     private String bookPdf;
 

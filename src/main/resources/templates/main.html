@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Գլխավոր</title>
 </head>
 
 <body>
-<a href="/login" >Login</a>   | <a href="/logout" >Logout</a>   |   <a href="/addUser" >Registracia</a>
-
-
-
+<div th:if="${currentUser == null}">
+    <a href="/login">Մուտք</a> | <a href="/user/add">Գրանցում</a>
+</div>
+<div th:if="${currentUser != null}">
+    Բարի գալուստ, <span th:text="${currentUser.user.name}"></span> | <a href="/myBooks">Իմ գրքերը</a> | <a href="/books/add">Ավելացնել գիրք</a> | <a href="/logout">Դուրս գալ</a>
+</div>
+<div>
+    <a th:each="book: ${books}" th:href="@{'/books/' + ${book.id}}">
+        <div style="width: 205px; float: left">
+            <div>
+  <img th:if="${book.bookImages != null && !book.bookImages.isEmpty()}" th:src="@{/getImage(picName=${book.getBookImages().get(0).name})}" width="100" height="100"/>
+                <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg"
+                     width="100" height="100"/>
+            </div>
+            <div>
+                Հեղինակ: <span th:each="author: ${book.getAuthors()}"
+                              th:text="${author.name} + ' '+ ${author.surname} + ' '"><br></span>
+            </div>
+            <div>
+                Վերնագիր: <span th:text="${book.title}"></span><br>
+                Հրատարակչություն: <span th:text="${book.edition}"></span>
+            </div>
+        </div>
+    </a>
+</div>
 </body>
 </html>

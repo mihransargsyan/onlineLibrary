@@ -1,11 +1,13 @@
 package com.example.onlinelibrary.controller;
 
-import com.example.onlinelibrary.repository.UserRepository;
+import com.example.onlinelibrary.entity.Book;
+import com.example.onlinelibrary.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 
 @Controller
@@ -22,10 +25,12 @@ public class MainController {
     @Value("${books.upload.path}")
     private String imagePath;
 
-    private final UserRepository userRepository;
+    private final BookService bookService;
 
     @GetMapping("/")
-    public String main() {
+    public String main(ModelMap map) {
+        List<Book> books = bookService.findAll();
+        map.addAttribute("books", books);
         return "main";
     }
 

@@ -2,25 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Save Book</title>
+    <title>Ավելացնել գիրք</title>
 </head>
 <body>
 
-Save Book:
+Ավելացնել գիրք:
 <form action="/books/add" method="post" enctype="multipart/form-data">
     <input th:if="${book != null}" type="hidden" th:value="${book.id}" name="id">
-    title: <input type="text" name="title" th:value="${book == null} ? '' : ${book.title}"/> <br>
-    description:<textarea name="description" th:text="${book == null} ? '' : ${book.description}"></textarea><br>
-    edition: <input type="text" name="edition" th:value="${book == null} ? '' : ${book.edition}"/> <br>
-    Categories:
+    Վերնագիր։ <input type="text" name="title" th:value="${book == null} ? '' : ${book.title}"/> <br>
+    Նկարագրություն:<textarea name="description" th:text="${book == null} ? '' : ${book.description}"></textarea><br>
+    Հրատարակչություն: <input type="text" name="edition" th:value="${book == null} ? '' : ${book.edition}"/> <br>
+    Կատեգորիա:
     <select name="categories[]" multiple>
         <option th:each="cat: ${categories}" th:text="${cat.name}" th:value="${cat.id}"></option>
     </select> <br>
-    Authors:
+    Հեղինակ:
     <select name="authors[]" multiple>
         <option th:each="author: ${authors}" th:text="${author.name}" th:value="${author.id}"></option>
     </select> <br>
-    picture:<input type="file" name="pictures" multiple /><br>
+    Նկար:<input type="file" name="pictures" multiple /><br>
     <input type="submit" value="save">
 </form>
 

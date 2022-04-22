@@ -3,7 +3,7 @@ package com.example.onlinelibrary.service;
 
 import com.example.onlinelibrary.entity.*;
 import com.example.onlinelibrary.repository.AuthorRepository;
-import com.example.onlinelibrary.repository.BookPicturesRepository;
+import com.example.onlinelibrary.repository.BookImageRepository;
 import com.example.onlinelibrary.repository.BookRepository;
 import com.example.onlinelibrary.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final AuthorRepository authorRepository;
-    private final BookPicturesRepository bookPicturesRepository;
+    private final BookImageRepository bookImageRepository;
 
     @Value("${books.upload.path}")
     private String imagePath;
@@ -34,10 +34,11 @@ public class BookService {
         book.setUser(user);
         book.setCategories(categoriesFromDB);
         book.setAuthors(authorsFromDB);
-        bookRepository.save(book);
+        save(book);
         saveBookImages(uploadedFiles, book);
         return book;
     }
+
 
     public Book save(Book book) {
         return bookRepository.save(book);
@@ -74,8 +75,8 @@ public class BookService {
 
     private List<Author> getAuthorsFromRequest(List<Integer> authorsIds) {
         List<Author> authors = new ArrayList<>();
-        for (Integer author : authorsIds) {
-            authors.add(authorRepository.getById(author));
+        for (Integer authorId : authorsIds) {
+            authors.add(authorRepository.getById(authorId));
         }
         return authors;
     }
@@ -86,14 +87,12 @@ public class BookService {
                 String fileName = System.currentTimeMillis() + "_" + uploadedFile.getOriginalFilename();
                 File newFile = new File(imagePath + fileName);
                 uploadedFile.transferTo(newFile);
-                BookPicture bookPicture = BookPicture.builder()
+                BookImage bookImage = BookImage.builder()
                         .name(fileName)
                         .book(book)
                         .build();
-
-                bookPicturesRepository.save(bookPicture);
+                bookImageRepository.save(bookImage);
             }
-
         }
     }
 

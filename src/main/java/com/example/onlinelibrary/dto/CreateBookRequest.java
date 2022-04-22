@@ -1,11 +1,9 @@
 package com.example.onlinelibrary.dto;
 
-import com.example.onlinelibrary.entity.Author;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,6 +17,6 @@ public class CreateBookRequest {
     private String edition;
     private List<Integer> categories;
     private List<Integer> authors;
-
+    private List<Integer> bookPictures;
 
 }
