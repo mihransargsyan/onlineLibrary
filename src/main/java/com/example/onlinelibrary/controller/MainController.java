@@ -1,7 +1,9 @@
 package com.example.onlinelibrary.controller;
 
 import com.example.onlinelibrary.entity.Book;
+import com.example.onlinelibrary.entity.Category;
 import com.example.onlinelibrary.service.BookService;
+import com.example.onlinelibrary.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,11 +28,14 @@ public class MainController {
     private String imagePath;
 
     private final BookService bookService;
+    private final CategoryService categoryService;
 
     @GetMapping("/")
     public String main(ModelMap map) {
         List<Book> books = bookService.findAll();
+        List<Category> categories = categoryService.findAll();
         map.addAttribute("books", books);
+        map.addAttribute("categories", categories);
         return "main";
     }
 

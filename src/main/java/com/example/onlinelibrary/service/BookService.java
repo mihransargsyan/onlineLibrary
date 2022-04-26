@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -60,9 +61,7 @@ public class BookService {
         return bookRepository.findAllByUser(user);
     }
 
-    public Book findBookByUserId(int id){
-        return bookRepository.findBookByUserId(id);
-    }
+
 
     private List<Category> getCategoriesFromRequest(List<Integer> categoriesIds) {
         List<Category> categories = new ArrayList<>();

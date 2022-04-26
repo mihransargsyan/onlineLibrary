@@ -2,23 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Save User</title>
+    <title>Ավելացնել օգտագործող</title>
 </head>
 <body>
-Save User
+
+<div style="width: 1000px; margin: 0 auto; padding: 5px">
+
+Ավելացնել օգտագործող
 <form action="/user/add" method="post">
     <input th:if="${user != null}" type="hidden" th:value="${user.getId()}" name="id">
-    Name: <input type="text" name="name" th:value="${user == null} ? '' : ${user.name}"/> <br>
-    surname:<input type="text" name="surname" th:value="${user == null} ? '' : ${user.surname}"/><br>
-    gender:<select name="gender">
-    <option value="MALE" >MALE</option>
-    <option value="FEMALE">FEMALE</option>
+    Անուն: <input type="text" name="name" th:value="${user == null} ? '' : ${user.name}"/> <br>
+    Ազգանուն:<input type="text" name="surname" th:value="${user == null} ? '' : ${user.surname}"/><br>
+    Սեռը:<select name="gender">
+    <option value="MALE" >Արական</option>
+    <option value="FEMALE">Իգական</option>
 </select><br>
-    phone:<input type="text" name="phone" th:value="${user == null} ? '' : ${user.phone}"/><br>
+    Հեռախոս:<input type="text" name="phone" th:value="${user == null} ? '' : ${user.phone}"/><br>
     email:<input type="text" name="email" th:value="${user == null} ? '' : ${user.email}"/><br>
-    password: <input type="password" name="password" th:value="${user == null} ? '' : ${user.password}"/><br>
-    <input type="submit" value="save">
+    Ծածկագիր: <input type="password" name="password" th:value="${user == null} ? '' : ${user.password}"/><br>
+    <input type="submit" value="ավելացնել">
 </form>
 
+</div>
 </body>
 </html>

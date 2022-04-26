@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -21,6 +22,6 @@ public class Author {
     private int id;
     private String name;
     private String surname;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
 }

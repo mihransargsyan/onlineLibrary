@@ -5,8 +5,8 @@
     <title>Ավելացնել գիրք</title>
 </head>
 <body>
-
-Ավելացնել գիրք:
+<div style="width: 1000px; margin: 0 auto; padding: 5px; text-align: center">
+Ավելացնել գիրք: | <a href="/books">Գնալ հետ</a>
 <form action="/books/add" method="post" enctype="multipart/form-data">
     <input th:if="${book != null}" type="hidden" th:value="${book.id}" name="id">
     Վերնագիր։ <input type="text" name="title" th:value="${book == null} ? '' : ${book.title}"/> <br>
@@ -16,13 +16,14 @@
     <select name="categories[]" multiple>
         <option th:each="cat: ${categories}" th:text="${cat.name}" th:value="${cat.id}"></option>
     </select> <br>
-    Հեղինակ:
+    Հեղինակներ:
     <select name="authors[]" multiple>
         <option th:each="author: ${authors}" th:text="${author.name}" th:value="${author.id}"></option>
-    </select> <br>
+    </select>
+    <a href="/author/add">Ավելացնել հեղինակ։</a><br>
     Նկար:<input type="file" name="pictures" multiple /><br>
-    <input type="submit" value="save">
+    <input type="submit" value="ավելացնել">
 </form>
-
+</div>
 </body>
 </html>

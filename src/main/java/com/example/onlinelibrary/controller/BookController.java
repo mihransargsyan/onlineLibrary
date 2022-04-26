@@ -75,6 +75,13 @@ public class BookController {
         return "redirect:/books";
     }
 
+    @GetMapping("/books/category/{id}")
+    public String categoryIdBook(@PathVariable int id, ModelMap map) {
+
+
+        return "main";
+    }
+
     @GetMapping("/books/{id}")
     public String singleBook(@PathVariable int id, ModelMap map) {
         map.addAttribute("categories", categoryService.findAll());
@@ -82,4 +89,13 @@ public class BookController {
         return "singleBook";
     }
 
+    @GetMapping("/books/delete/{id}")
+    public String deleteBook(@PathVariable("id") int id,
+                             @AuthenticationPrincipal CurrentUser currentUser) {
+        Book book = bookService.findById(id);
+        if(book.getUser().getId() == currentUser.getUser().getId()){
+            bookService.deleteById(id);
+        }
+        return "redirect:/books";
+    }
 }

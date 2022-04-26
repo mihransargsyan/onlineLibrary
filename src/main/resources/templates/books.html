@@ -6,27 +6,39 @@
 </head>
 <body>
 
-<div>
-    <a href="/books/add">Ավելացնել գիրք</a>
-    <a th:each="book: ${books}" th:href="@{'/books/' + ${book.id}}">
-        <div style="width: 205px; float: left">
-            <div>
-               <img th:if="${book.bookImages != null && !book.bookImages.isEmpty()}" th:src="@{/getImage(picName=${book.bookImages.get(0).name})}" width="100" height="100"/>
-                <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg" width="100" height="100"/>
-            </div>
+<div style="width: 1000px; margin: 0 auto; padding: 5px">
 
-            <div>
-                Հեղինակ: <span th:each="author: ${book.getAuthors()}" th:text="${author.name} + ' '+ ${author.surname} + ' '" ><br></span>
-            </div>
+    <div style="height: 25px; text-align: right; padding: 5px">
+        <a href="/books/add">Ավելացնել գիրք</a> | <a href="/">Գնալ հետ</a>
+    </div>
 
-            <div>
-                Վերնագիր: <span th:text="${book.title}"></span><br>
-                Հրատարակչություն: <span th:text="${book.edition}"></span>
-            </div>
+    <div>
+        <a th:each="book: ${books}" th:href="@{'/books/' + ${book.id}}">
+            <div style="width: 205px; float: left">
+                <div>
+                    <img th:if="${book.bookImages != null && !book.bookImages.isEmpty()}"
+                         th:src="@{/getImage(picName=${book.bookImages.get(0).name})}" width="100" height="100"/>
+                    <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg"
+                         width="100" height="100"/>
+                </div>
 
-        </div>
-    </a>
+                <div>
+                    Հեղինակ: <span th:each="author: ${book.getAuthors()}"
+                                   th:text="${author.name} + ' '+ ${author.surname} + ' '"><br></span>
+                </div>
+
+                <div>
+                    Վերնագիր: <span th:text="${book.title}"></span><br>
+                    Հրատարակչություն: <span th:text="${book.edition}"></span>
+                </div>
+                <div th:if="${currentUser != null}">
+<!--                    th:href="@{'/deleteUser/' + ${u.id}}"-->
+                    <a th:href="@{'/books/delete/'+ ${book.getId()}}">Ջնջել</a>
+                </div>
+
+            </div>
+        </a>
+    </div>
 </div>
-
 </body>
 </html>
