@@ -18,4 +18,5 @@ spring:
 
 books:
   upload:
-    path: C:\Users\User\IdeaProjects\onlineLibrary\upload\
+    pathBookImages: C:\Users\User\IdeaProjects\onlineLibrary\upload\bookImages\
+    pathBookPdf: C:\Users\User\IdeaProjects\onlineLibrary\upload\bookPdf\

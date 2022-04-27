@@ -1,4 +1,4 @@
-package com.example.onlinelibrary.security;
+package com.example.onlinelibrary.service;
 
 import com.example.onlinelibrary.entity.User;
 import com.example.onlinelibrary.service.UserService;

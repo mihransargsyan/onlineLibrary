@@ -35,6 +35,9 @@
         <div>
             <span th:each="category: ${book.categories}" th:text="${category.name + ' '}"></span><br>
         </div>
+        <div>
+            <a th:if="${currentUser != null}" th:href="@{/book/download(getPdf=${book.getBookPdf()})}">Ներբեռնել</a>
+        </div>
     </div>
 </div>
 

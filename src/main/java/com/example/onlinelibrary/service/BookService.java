@@ -8,6 +8,8 @@ import com.example.onlinelibrary.repository.BookRepository;
 import com.example.onlinelibrary.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +28,13 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final BookImageRepository bookImageRepository;
 
-    @Value("${books.upload.path}")
+    @Value("${books.upload.pathBookImages}")
     private String imagePath;
 
-    public Book addBook(Book book, MultipartFile[] uploadedFiles, User user, List<Integer> categories, List<Integer> authors) throws IOException {
+    @Value("${books.upload.pathBookPdf}")
+    private String pdfPath;
+
+    public Book addBook(Book book, MultipartFile[] uploadedFiles,MultipartFile uploadedPdf, User user, List<Integer> categories, List<Integer> authors) throws IOException {
         List<Category> categoriesFromDB = getCategoriesFromRequest(categories);
         List<Author> authorsFromDB = getAuthorsFromRequest(authors);
         book.setUser(user);
@@ -37,8 +42,10 @@ public class BookService {
         book.setAuthors(authorsFromDB);
         save(book);
         saveBookImages(uploadedFiles, book);
+        saveBookPdf(uploadedPdf, book);
         return book;
     }
+
 
 
     public Book save(Book book) {
@@ -51,6 +58,10 @@ public class BookService {
 
     public Book findById(int id) {
         return bookRepository.getById(id);
+    }
+
+    public Page<Book> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
     public List<Book> findAll() {
@@ -92,6 +103,20 @@ public class BookService {
                         .build();
                 bookImageRepository.save(bookImage);
             }
+        }
+    }
+
+    private void saveBookPdf(MultipartFile uploadedPdf, Book book) {
+        if (!uploadedPdf.isEmpty()) {
+            String fileName = System.currentTimeMillis() + "_" + uploadedPdf.getOriginalFilename();
+            File newFile = new File(pdfPath + fileName);
+            try {
+                uploadedPdf.transferTo(newFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            book.setBookPdf(fileName);
+            bookRepository.save(book);
         }
     }
 
