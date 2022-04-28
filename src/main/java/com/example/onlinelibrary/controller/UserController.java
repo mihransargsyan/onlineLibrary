@@ -1,11 +1,9 @@
 package com.example.onlinelibrary.controller;
 
 import com.example.onlinelibrary.entity.User;
-import com.example.onlinelibrary.security.CurrentUser;
 import com.example.onlinelibrary.service.MailService;
 import com.example.onlinelibrary.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;

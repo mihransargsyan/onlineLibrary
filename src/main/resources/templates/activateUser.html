@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Activate User</title>
+  <title th:text="#{main.activate.user}"></title>
 </head>
 
 <body>
 <span th:text="${message}"></span> <br>
-<a href="/login">Login</a>
+<a href="/login" th:text="#{main.login}"></a>
 </body>
 </html>

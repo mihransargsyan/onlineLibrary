@@ -2,7 +2,6 @@ package com.example.onlinelibrary.controller;
 
 import com.example.onlinelibrary.dto.CreateBookRequest;
 import com.example.onlinelibrary.entity.Book;
-import com.example.onlinelibrary.entity.Category;
 import com.example.onlinelibrary.entity.User;
 import com.example.onlinelibrary.security.CurrentUser;
 import com.example.onlinelibrary.service.AuthorService;
@@ -10,24 +9,15 @@ import com.example.onlinelibrary.service.BookService;
 import com.example.onlinelibrary.service.CategoryService;
 import com.example.onlinelibrary.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -90,17 +80,8 @@ public class BookController {
     @GetMapping("/books/category/{id}")
     public String categoryIdBook(@PathVariable int id, ModelMap map) {
 
-    List<Book> books = bookService.findAll();
-        for (Book book : books) {
-            List<Category> categories = book.getCategories();
-            for (Category category : categories) {
-                if(category.getId()==id){
+        // TODO: 28.04.2022 grel category logikan
 
-                }
-            }
-        }
-        List<Category> categories = categoryService.findAll();
-        map.addAttribute("categories", categories);
         return "main";
     }
 

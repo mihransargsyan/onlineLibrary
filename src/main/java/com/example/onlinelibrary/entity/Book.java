@@ -34,7 +34,6 @@ public class Book {
 
     @OneToMany(mappedBy = "book")
     private List<BookImage> bookImages;
-
     private String bookPdf;
 
 }

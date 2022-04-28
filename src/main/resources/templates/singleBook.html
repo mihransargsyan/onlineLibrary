@@ -2,42 +2,35 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Գիրք</title>
+    <title th:text="#{main.book}"></title>
 </head>
 <body>
 
-<div>
-    <a href="/books">Գնալ հետ</a>
-    <a href="/books/add">Ավելացնել գիրք</a>
+<div style="width: 1000px; margin: 0 auto; padding: 1px">
 
-    <div style="margin: 0 auto; width: 1000px; height: 1000px">
+    <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
+        <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
+    </div>
+
+    <div style="margin: 0 auto; width: 1000px">
         <div>
-            <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg" width="300"/>
-
+            <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg" width="400"/>
             <ul th:if="${book.bookImages != null && !book.bookImages.isEmpty()}">
-                <li th:each="picture: ${book.bookImages}"><img th:src="@{/getImage(picName=${picture.name})}"  width="200"/>
+                <li th:each="picture: ${book.bookImages}"><img th:src="@{/getImage(picName=${picture.name})}" width="400"/>
                 </li>
             </ul>
-
         </div>
 
-        <div>
-            Վերնագիր: <span th:text="${book.title}"></span><br>
-            Նակարագրություն: <span th:text="${book.description}"></span><br>
-            Հրատարակչություն: <span th:text="${book.edition}"></span><br>
-        </div>
-        Հեղինակ:
-        <div>
-            <span th:each="author: ${book.authors}"
-                  th:text="${author.getName() + ' '+ author.getSurname() + ' '}"></span><br>
-        </div>
-       Կատեգորիա:
-        <div>
-            <span th:each="category: ${book.categories}" th:text="${category.name + ' '}"></span><br>
-        </div>
-        <div>
-            <a th:if="${currentUser != null}" th:href="@{/book/download(getPdf=${book.getBookPdf()})}">Ներբեռնել</a>
-        </div>
+        <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span><br>
+        <b th:text="#{main.description}"></b> <span th:text="${book.description}"></span><br>
+        <b th:text="#{main.edition}"></b> <span th:text="${book.edition}"></span><br>
+        <b th:text="#{main.author}"></b> <span th:each="author: ${book.authors}"
+                                               th:text="${author.getName() + ' '+ author.getSurname() + ' '}"></span><br>
+        <b th:text="#{main.category}"></b><span th:each="category: ${book.categories}"
+                                                th:text="${category.name + ' '}"></span><br>
+        <a th:if="${currentUser != null}" th:href="@{/book/download(getPdf=${book.getBookPdf()})}"
+           th:text="#{main.download}"></a>
+
     </div>
 </div>
 

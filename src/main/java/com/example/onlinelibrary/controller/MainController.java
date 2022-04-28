@@ -53,8 +53,8 @@ public class MainController {
             map.addAttribute("pageNumbers", pageNumbers);
         }
 
-       List<Category> categories = categoryService.findAll();
-       map.addAttribute("categories", categories);
+        List<Category> categories = categoryService.findAll();
+        map.addAttribute("categories", categories);
         return "main";
     }
 

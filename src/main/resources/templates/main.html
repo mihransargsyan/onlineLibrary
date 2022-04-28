@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Գլխավոր</title>
+    <title th:text="#{main.home}"></title>
 </head>
 <style>
     .pagination {
@@ -24,21 +24,29 @@
 </style>
 
 <body>
+
 <div style="width: 1000px; margin: 0 auto; padding: 1px">
+
     <div>
+        <div style="height: 25px; text-align: right; padding: 1px">
+            <a href="?lang=hy">Հայերեն</a> | <a href="?lang=ru">Русский</a> | <a href="?lang=en">English</a>
+        </div>
         <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
-            <a href="/login">Մուտք</a> | <a href="/user/add">Գրանցում</a>
+            <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
+
         </div>
         <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser != null}">
-            Բարի գալուստ, <span th:text="${currentUser.user.name}"></span> | <a href="/myBooks">Իմ գրքերը</a> | <a
-                href="/books/add">Ավելացնել գիրք</a> | <a th:href="@{'/user/edit/' + ${currentUser.user.id}}">Իմ
-            տվյալները</a> | <a href="/logout">Դուրս գալ</a>
+            <span th:text="#{main.welcome} +' '+ ${currentUser.user.name}"></span> | <a th:text="#{main.myBooks}"
+                                                                                        href="/myBooks"></a> | <a
+                th:text="#{main.addBook}" href="/books/add"></a> | <a th:text="#{main.myDetails}"
+                                                                      th:href="@{'/user/edit/' + ${currentUser.user.id}}"></a>
+            | <a th:text="#{main.logout}" href="/logout"></a>
         </div>
     </div>
 
     <div style="height: 25px; text-align: left; padding: 1px">
         <ul style="overflow:hidden">
-            <li style="display: inline; margin-left:40px; padding: 5px"><a href="/">Գլխավոր</a></li>
+            <li  style="display: inline; margin-left:40px; padding: 5px"><a href="/" th:text="#{main.home}"></a></li>
             <li style="display: inline; margin-left:40px" th:each="category: ${categories}">
                 <a th:href="@{'/books/category/' + ${category.getId()}}" th:text="${category.getName()}"></a>
             </li>
@@ -53,9 +61,9 @@
                          th:src="@{/getImage(picName=${book.getBookImages().get(0).name})}" width="195" height="135"/>
                     <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg"
                          width="195" height="135"/>
-                    <b>Հեղինակ:</b> <span th:each="author: ${book.getAuthors()}"
-                                          th:text="${author.name} + ' '+ ${author.surname} + ' '"></span><br>
-                    <b>Վերնագիր:</b> <span th:text="${book.title}"></span>
+                    <b th:text="#{main.author}"></b> <span th:each="author: ${book.getAuthors()}"
+                                                           th:text="${author.name} + ' '+ ${author.surname} + ' '"></span><br>
+                    <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span>
                 </div>
 
             </div>

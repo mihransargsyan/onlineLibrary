@@ -15,7 +15,6 @@ import java.util.Collections;
 @Configuration
 public class MailConfig {
 
-
     @Bean
     public ResourceBundleMessageSource emailMessageSource() {
         final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();

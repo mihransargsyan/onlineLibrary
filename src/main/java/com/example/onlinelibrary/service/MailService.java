@@ -28,7 +28,6 @@ public class MailService {
     public void sendMail(String toEmail, String subject, String message) {
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-
         simpleMailMessage.setTo(toEmail);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(message);
@@ -43,18 +42,14 @@ public class MailService {
         final Context ctx = new Context(locale);
         ctx.setVariable("name", user.getName());
         ctx.setVariable("url", link);
-
         final String htmlContent = templateEngine.process(templateName, ctx);
-
         // Prepare message using a Spring helper
         final MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         final MimeMessageHelper message =
                 new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
         message.setSubject(subject);
         message.setTo(to);
-
         message.setText(htmlContent, true); // true = isHtml
-
         // Send mail
         this.javaMailSender.send(mimeMessage);
     }

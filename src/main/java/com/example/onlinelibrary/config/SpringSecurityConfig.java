@@ -11,13 +11,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
-public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
+public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private  UserDetailsImpl userDetails;
+    private UserDetailsImpl userDetails;
 
     @Autowired
-    private   PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -28,19 +28,15 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET,"/user/add").permitAll()
-                .antMatchers(HttpMethod.POST,"/user/add").permitAll()
-                .antMatchers(HttpMethod.GET,"/user/activate").permitAll()
-                .antMatchers(HttpMethod.GET,"/user/edit/{id}").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
-                .antMatchers("/user/delete/{id}").hasAnyAuthority(Role.ADMIN.name())
-                .antMatchers(HttpMethod.GET,"/books").permitAll()
-                .antMatchers(HttpMethod.POST,"/books").permitAll()
-                .antMatchers(HttpMethod.GET,"/books/{id}").permitAll()
-                .antMatchers(HttpMethod.POST,"/books/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/edit/{id}").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/user/delete/{id}").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                 .antMatchers("/books/add").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/myBooks").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/books/byUser/{id}").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/books/delete/{id}").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/author/add").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                .antMatchers("/book/download").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                 .anyRequest().permitAll();
-           //     .anyRequest().authenticated();
     }
 
     @Override

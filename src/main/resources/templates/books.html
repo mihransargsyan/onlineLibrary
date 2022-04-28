@@ -2,14 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Գրքեր</title>
+    <title th:text="#{main.books}"></title>
 </head>
 <body>
 
 <div style="width: 1000px; margin: 0 auto; padding: 5px">
 
     <div style="height: 25px; text-align: right; padding: 5px">
-        <a href="/books/add">Ավելացնել գիրք</a> | <a href="/">Գնալ հետ</a>
+        <a href="/books/add" th:text="#{main.addBook}"></a> | <a href="/" th:text="#{main.back}"></a>
     </div>
 
     <div>
@@ -22,20 +22,15 @@
                          width="100" height="100"/>
                 </div>
 
-                <div>
-                    Հեղինակ: <span th:each="author: ${book.getAuthors()}"
-                                   th:text="${author.name} + ' '+ ${author.surname} + ' '"><br></span>
-                </div>
+                <b th:text="#{main.author}"></b> <span th:each="author: ${book.getAuthors()}"
+                                                  th:text="${author.name} + ' '+ ${author.surname} + ' '"><br></span>
 
-                <div>
-                    Վերնագիր: <span th:text="${book.title}"></span><br>
-                    Հրատարակչություն: <span th:text="${book.edition}"></span>
-                </div>
-                <div th:if="${currentUser != null}">
-<!--                    th:href="@{'/deleteUser/' + ${u.id}}"-->
-                    <a th:href="@{'/books/delete/'+ ${book.getId()}}">Ջնջել</a>
-                </div>
-
+                    <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span><br>
+                    <b th:text="#{main.edition}"></b> <span th:text="${book.edition}"></span>
+                            <span th:if="${currentUser != null}">
+                                <a th:href="@{'/books/delete/'+ ${book.getId()}}"
+                                   th:text="#{main.delete}"></a>
+                            </span>
             </div>
         </a>
     </div>

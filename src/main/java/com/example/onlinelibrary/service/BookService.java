@@ -34,7 +34,7 @@ public class BookService {
     @Value("${books.upload.pathBookPdf}")
     private String pdfPath;
 
-    public Book addBook(Book book, MultipartFile[] uploadedFiles,MultipartFile uploadedPdf, User user, List<Integer> categories, List<Integer> authors) throws IOException {
+    public Book addBook(Book book, MultipartFile[] uploadedFiles, MultipartFile uploadedPdf, User user, List<Integer> categories, List<Integer> authors) throws IOException {
         List<Category> categoriesFromDB = getCategoriesFromRequest(categories);
         List<Author> authorsFromDB = getAuthorsFromRequest(authors);
         book.setUser(user);
@@ -45,7 +45,6 @@ public class BookService {
         saveBookPdf(uploadedPdf, book);
         return book;
     }
-
 
 
     public Book save(Book book) {
@@ -73,7 +72,6 @@ public class BookService {
     }
 
 
-
     private List<Category> getCategoriesFromRequest(List<Integer> categoriesIds) {
         List<Category> categories = new ArrayList<>();
         for (Integer category : categoriesIds) {
@@ -91,7 +89,7 @@ public class BookService {
         return authors;
     }
 
-        private void saveBookImages(MultipartFile[] uploadedFiles, Book book) throws IOException {
+    private void saveBookImages(MultipartFile[] uploadedFiles, Book book) throws IOException {
         if (uploadedFiles.length != 0) {
             for (MultipartFile uploadedFile : uploadedFiles) {
                 String fileName = System.currentTimeMillis() + "_" + uploadedFile.getOriginalFilename();

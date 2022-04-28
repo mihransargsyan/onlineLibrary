@@ -30,7 +30,6 @@ public class UserSchedulingService {
                     userService.save(user);
                 }
             }
-
         }
     }
 
