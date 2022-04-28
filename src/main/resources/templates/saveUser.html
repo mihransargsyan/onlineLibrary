@@ -2,27 +2,30 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Ավելացնել օգտագործող</title>
+    <title th:text="#{main.save}"></title>
 </head>
 <body>
 
-<div style="width: 1000px; margin: 0 auto; padding: 5px">
-
-Ավելացնել օգտագործող
+<div style="width: 1000px; margin: 0 auto; padding: 5px; text-align: center">
+    <b th:text="#{main.addUser}"> </b><br>
 <form action="/user/add" method="post">
     <input th:if="${user != null}" type="hidden" th:value="${user.getId()}" name="id">
-    Անուն: <input type="text" name="name" th:value="${user == null} ? '' : ${user.name}"/> <br>
-    Ազգանուն:<input type="text" name="surname" th:value="${user == null} ? '' : ${user.surname}"/><br>
-    Սեռը:<select name="gender">
-    <option value="MALE" >Արական</option>
-    <option value="FEMALE">Իգական</option>
+    <b th:text="#{main.name}"> </b> <input type="text" name="name" th:value="${user == null} ? '' : ${user.name}"/> <br>
+    <b th:text="#{main.surname}"> </b> <input type="text" name="surname" th:value="${user == null} ? '' : ${user.surname}"/><br>
+    <b th:text="#{main.gender}"> </b> <select name="gender">
+    <option value="MALE" th:text="#{main.male}"> </option>
+    <option value="FEMALE" th:text="#{main.female}"> </option>
 </select><br>
-    Հեռախոս:<input type="text" name="phone" th:value="${user == null} ? '' : ${user.phone}"/><br>
-    email:<input type="text" name="email" th:value="${user == null} ? '' : ${user.email}"/><br>
-    Ծածկագիր: <input type="password" name="password" th:value="${user == null} ? '' : ${user.password}"/><br>
-    <input type="submit" value="ավելացնել">
+    <b th:text="#{main.phone}"> </b> <input type="text" name="phone" th:value="${user == null} ? '' : ${user.phone}"/><br>
+    <b th:text="#{main.email}"> </b> <input type="text" name="email" th:value="${user == null} ? '' : ${user.email}"/><br>
+    <b th:text="#{main.password}"> </b> <input type="password" name="password" th:value="${user == null} ? '' : ${user.password}"/><br>
+    <input type="submit" th:value="#{main.save}">
 </form>
-
+<span th:if="${user != null}" >
+    <a th:href="@{'/user/delete/'+ ${user.getId()}}"th:text="#{main.delete}">
+    </a>
+</span>
 </div>
+
 </body>
 </html>

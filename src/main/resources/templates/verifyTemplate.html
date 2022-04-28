@@ -2,15 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Verify</title>
+  <title th:text="#{main.verification}"></title>
 </head>
 <body>
 
-<span >Welcome</span> <span th:text="${name}"></span>,
-
-<span style="color: green">Please verify your account by clicking on  </span>
-
-<a href="http://localhost:8080/" th:href="${url}">Link</a>
+<span th:text="#{main.welcome}"></span> <span th:text="${name}"></span>,
+<span style="color: green" th:text="#{main.verify}"></span>
+<a href="http://localhost:8080/" th:href="${url}" th:text="#{main.link}"></a>
 
 </body>
 </html>

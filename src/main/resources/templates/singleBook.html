@@ -26,7 +26,7 @@
         <b th:text="#{main.edition}"></b> <span th:text="${book.edition}"></span><br>
         <b th:text="#{main.author}"></b> <span th:each="author: ${book.authors}"
                                                th:text="${author.getName() + ' '+ author.getSurname() + ' '}"></span><br>
-        <b th:text="#{main.category}"></b><span th:each="category: ${book.categories}"
+        <b th:text="#{main.category}"></b> <span th:each="category: ${book.categories}"
                                                 th:text="${category.name + ' '}"></span><br>
         <a th:if="${currentUser != null}" th:href="@{/book/download(getPdf=${book.getBookPdf()})}"
            th:text="#{main.download}"></a>

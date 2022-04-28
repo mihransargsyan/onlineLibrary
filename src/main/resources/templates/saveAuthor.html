@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Ավելացնել հեղինակ</title>
+    <title th:text="#{main.addAuthor}"></title>
 </head>
 <body>
 
 <div style="width: 1000px; margin: 0 auto; padding: 5px; text-align: center">
-    Ավելացնել հեղինակ: | <a href="/books/add">Գնալ հետ</a>
+    <b th:text="#{main.addAuthor}"> </b>   | <a href="/books/add" th:text="#{main.back}"> </a>
     <form action="/author/add" method="post" >
-        Անուն։ <input type="text" name="name"/> <br>
-        Ազգանուն:<input type="text" name="surname"/><br>
-        Ծննդյան ամսաթիվ:<input type="date" name="dateOfBirth"><br>
-        <input type="submit" value="ավելացնել">
+        <b th:text="#{main.name}"> </b> <input type="text" name="name"/> <br>
+        <b th:text="#{main.surname}"> </b> <input type="text" name="surname"/><br>
+        <b th:text="#{main.dataOfBirth}"></b> <input type="date" name="dateOfBirth"><br>
+        <input type="submit" th:value="#{main.add}">
     </form>
 </div>
 
