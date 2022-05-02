@@ -5,34 +5,48 @@
     <title th:text="#{main.book}"></title>
 </head>
 <body>
+<div style="background-color: #EDEDED">
+    <div style="width: 1000px; margin: 0 auto; padding: 1px; background-color: #EDEDED">
 
-<div style="width: 1000px; margin: 0 auto; padding: 1px">
-
-    <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
-        <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
-    </div>
-
-    <div style="margin: 0 auto; width: 1000px">
         <div>
-            <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg" width="400"/>
-            <ul th:if="${book.bookImages != null && !book.bookImages.isEmpty()}">
-                <li th:each="picture: ${book.bookImages}"><img th:src="@{/getImage(picName=${picture.name})}" width="400"/>
-                </li>
-            </ul>
+            <div style="height: 25px; text-align: right; padding: 1px">
+                <a href="?lang=hy">Հայերեն</a> | <a href="?lang=ru">Русский</a> | <a href="?lang=en">English</a>
+            </div>
+            <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
+                <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
+
+            </div>
+            <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser != null}">
+                <span th:text="#{main.welcome} +' '+ ${currentUser.user.name}"></span> | <a th:text="#{main.myBooks}"
+                                                                                            href="/myBooks"></a> | <a
+                    th:text="#{main.addBook}" href="/books/add"></a> | <a th:text="#{main.myDetails}"
+                                                                          th:href="@{'/user/edit/' + ${currentUser.user.id}}"></a>
+                | <a th:text="#{main.logout}" href="/logout"></a>
+            </div>
         </div>
 
-        <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span><br>
-        <b th:text="#{main.description}"></b> <span th:text="${book.description}"></span><br>
-        <b th:text="#{main.edition}"></b> <span th:text="${book.edition}"></span><br>
-        <b th:text="#{main.author}"></b> <span th:each="author: ${book.authors}"
-                                               th:text="${author.getName() + ' '+ author.getSurname() + ' '}"></span><br>
-        <b th:text="#{main.category}"></b> <span th:each="category: ${book.categories}"
-                                                th:text="${category.name + ' '}"></span><br>
-        <a th:if="${currentUser != null}" th:href="@{/book/download(getPdf=${book.getBookPdf()})}"
-           th:text="#{main.download}"></a>
+        <div style="margin: 0 auto; width: 1000px">
+            <div>
+                <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg" width="400"/>
+                <ul th:if="${book.bookImages != null && !book.bookImages.isEmpty()}">
+                    <li th:each="picture: ${book.bookImages}"><img th:src="@{/getImage(picName=${picture.name})}"
+                                                                   width="400"/>
+                    </li>
+                </ul>
+            </div>
 
+            <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span><br>
+            <b th:text="#{main.description}"></b> <span th:text="${book.description}"></span><br>
+            <b th:text="#{main.edition}"></b> <span th:text="${book.edition}"></span><br>
+            <b th:text="#{main.author}"></b> <span th:each="author: ${book.authors}"
+                                                   th:text="${author.getName() + ' '+ author.getSurname() + ' '}"></span><br>
+            <b th:text="#{main.category}"></b> <span th:each="category: ${book.categories}"
+                                                     th:text="${category.name + ' '}"></span><br>
+            <a th:if="${currentUser != null}" th:href="@{/book/download(getPdf=${book.getBookPdf()})}"
+               th:text="#{main.download}"></a>
+
+        </div>
     </div>
 </div>
-
 </body>
 </html>

@@ -13,10 +13,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+
 import java.time.LocalDateTime;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,9 +31,28 @@ public class UserController {
     }
 
     @PostMapping("/user/add")
-    public String addUser(@ModelAttribute User user,
+    public String addUser(@ModelAttribute  User user,
                           @AuthenticationPrincipal CurrentUser currentUser,
+                          ModelMap map,
                           Locale locale) throws MessagingException {
+        List<String> errorMsg = new ArrayList<>();
+        if (user.getName() == null || user.getName().equals("")) {
+            errorMsg.add("name is required");
+        }
+        if (user.getSurname() == null || user.getSurname().equals("")) {
+            errorMsg.add("surname is required");
+        }
+        if (user.getEmail() == null || user.getEmail().equals("")) {
+            errorMsg.add("email is required");
+        }
+        if (user.getPassword() == null || user.getPassword().equals("")) {
+            errorMsg.add("pasword is required");
+        }
+        if (!errorMsg.isEmpty()) {
+            map.addAttribute("errors", errorMsg);
+            return "saveUser";
+        }
+
         if (currentUser == null) {
             user.setActive(false);
             user.setToken(UUID.randomUUID().toString());

@@ -7,7 +7,27 @@
 <body>
 
 <div style="width: 1000px; margin: 0 auto; padding: 5px; text-align: center">
-    <b th:text="#{main.addAuthor}"> </b>   | <a href="/books/add" th:text="#{main.back}"> </a>
+    <div style="height: 25px; text-align: right; padding: 1px">
+        <a href="?lang=hy">Հայերեն</a> | <a href="?lang=ru">Русский</a> | <a href="?lang=en">English</a>
+    </div>
+    <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
+        <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
+        | <a href="/" th:text="#{main.back}"></a>
+    </div>
+    <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser != null}">
+        <span th:text="#{main.welcome} +' '+ ${currentUser.user.name}"></span> | <a th:text="#{main.myBooks}"
+                                                                                    href="/myBooks"></a> | <a
+            th:text="#{main.addBook}" href="/books/add"></a> | <a th:text="#{main.myDetails}"
+                                                                  th:href="@{'/user/edit/' + ${currentUser.user.id}}"></a>
+        | <a th:text="#{main.logout}" href="/logout"></a> | <a href="/" th:text="#{main.back}"></a>
+    </div>
+    <div th:if="${errors != null && !errors.isEmpty()}">
+        <ul>
+            <li style="color: red" th:each="error: ${errors}" th:text="${error}"></li>
+        </ul>
+    </div>
+
+    <b th:text="#{main.addAuthor}"> </b>
     <form action="/author/add" method="post" >
         <b th:text="#{main.name}"> </b> <input type="text" name="name"/> <br>
         <b th:text="#{main.surname}"> </b> <input type="text" name="surname"/><br>

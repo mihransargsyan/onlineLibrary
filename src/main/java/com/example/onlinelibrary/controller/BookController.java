@@ -2,6 +2,7 @@ package com.example.onlinelibrary.controller;
 
 import com.example.onlinelibrary.dto.CreateBookRequest;
 import com.example.onlinelibrary.entity.Book;
+import com.example.onlinelibrary.entity.Category;
 import com.example.onlinelibrary.entity.User;
 import com.example.onlinelibrary.security.CurrentUser;
 import com.example.onlinelibrary.service.AuthorService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -51,6 +53,8 @@ public class BookController {
         User user = currentUser.getUser();
         List<Book> books = bookService.findAllByUser(user);
         map.addAttribute("books", books);
+        List<Category> categories = categoryService.findAll();
+        map.addAttribute("categories", categories);
         return "books";
     }
 
@@ -67,8 +71,37 @@ public class BookController {
     public String addBook(@ModelAttribute CreateBookRequest createBookRequest,
                           @RequestParam("pictures") MultipartFile[] uploadedFiles,
                           @RequestParam("pdf") MultipartFile uploadedPdf,
-                          @AuthenticationPrincipal CurrentUser currentUser) {
+                          @AuthenticationPrincipal CurrentUser currentUser,
+                          ModelMap map) {
+
         Book book = mapper.map(createBookRequest, Book.class);
+
+        List<String> errorMsg = new ArrayList<>();
+        if (book.getTitle() == null || book.getTitle().equals("")) {
+            errorMsg.add("title is required");
+        }
+        if (book.getEdition() == null || book.getEdition().equals("")) {
+            errorMsg.add("edition is required");
+        }
+        if (book.getDescription() == null || book.getDescription().equals("")) {
+            errorMsg.add("description is required");
+        }
+        if(!uploadedPdf.getOriginalFilename().endsWith(".pdf")){
+            errorMsg.add("required is PDF file");
+        }
+
+        if (uploadedPdf.isEmpty() || uploadedPdf.getSize() == 0 ) {
+            errorMsg.add("Book PDF is required");
+        }
+
+        if (!errorMsg.isEmpty()) {
+            map.addAttribute("errors", errorMsg);
+            User user = currentUser.getUser();
+            map.addAttribute("categories", categoryService.findAll());
+            map.addAttribute("authors", authorService.findAll());
+            map.addAttribute("user", user);
+            return "saveBook";
+        }
         try {
             bookService.addBook(book, uploadedFiles, uploadedPdf, currentUser.getUser(), createBookRequest.getCategories(), createBookRequest.getAuthors());
         } catch (IOException e) {
@@ -77,12 +110,29 @@ public class BookController {
         return "redirect:/books";
     }
 
+    @PostMapping("/books/search")
+    public String searchBook(ModelMap map,
+                             @RequestParam("keyword") String keyword) {
+        List<Book> books = bookService.findBooksByTitle(keyword);
+            map.addAttribute("books", books);
+        return "books";
+    }
+
     @GetMapping("/books/category/{id}")
     public String categoryIdBook(@PathVariable int id, ModelMap map) {
-
-        // TODO: 28.04.2022 grel category logikan
-
-        return "main";
+        List<Book> books= new ArrayList<>();
+        List<Book> allBooks = bookService.findAll();
+        for (Book book : allBooks) {
+            for (Category category : book.getCategories()) {
+                if (category.getId() == id) {
+                  books.add(book);
+                }
+            }
+        }
+        List<Category> categories = categoryService.findAll();
+        map.addAttribute("categories", categories);
+        map.addAttribute("books", books);
+        return "books";
     }
 
     @GetMapping("/books/{id}")

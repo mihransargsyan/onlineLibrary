@@ -6,33 +6,57 @@
 </head>
 <body>
 
-<div style="width: 1000px; margin: 0 auto; padding: 5px">
+<div style="background-color: #EDEDED">
+    <div style="width: 1000px; margin: 0 auto; padding: 1px; background-color: #EDEDED">
 
-    <div style="height: 25px; text-align: right; padding: 5px">
-        <a href="/books/add" th:text="#{main.addBook}"></a> | <a href="/" th:text="#{main.back}"></a>
-    </div>
-
-    <div>
-        <a th:each="book: ${books}" th:href="@{'/books/' + ${book.id}}">
-            <div style="width: 205px; float: left">
-                <div>
-                    <img th:if="${book.bookImages != null && !book.bookImages.isEmpty()}"
-                         th:src="@{/getImage(picName=${book.bookImages.get(0).name})}" width="100" height="100"/>
-                    <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg"
-                         width="100" height="100"/>
-                </div>
-
-                <b th:text="#{main.author}"></b> <span th:each="author: ${book.getAuthors()}"
-                                                  th:text="${author.name} + ' '+ ${author.surname} + ' '"><br></span>
-
-                    <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span><br>
-                    <b th:text="#{main.edition}"></b> <span th:text="${book.edition}"></span>
-                            <span th:if="${currentUser != null}">
-                                <a th:href="@{'/books/delete/'+ ${book.getId()}}"
-                                   th:text="#{main.delete}"></a>
-                            </span>
+        <div>
+            <div style="height: 25px; text-align: right; padding: 1px">
+                <a href="?lang=hy">Հայերեն</a> | <a href="?lang=ru">Русский</a> | <a href="?lang=en">English</a>
             </div>
-        </a>
+            <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
+                <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
+
+            </div>
+            <div style="height: 25px; text-align: center; padding: 1px">
+                <form action="/books/search" method="post">
+                    <input type="text" name="keyword"/> <input type="submit" th:value="#{main.search}"/>
+                </form>
+            </div>
+            <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser != null}">
+                <span th:text="#{main.welcome} +' '+ ${currentUser.user.name}"></span> | <a th:text="#{main.myBooks}"
+                                                                                            href="/myBooks"></a> | <a
+                    th:text="#{main.addBook}" href="/books/add"></a> | <a th:text="#{main.myDetails}"
+                                                                          th:href="@{'/user/edit/' + ${currentUser.user.id}}"></a>
+                | <a th:text="#{main.logout}" href="/logout"></a>
+            </div>
+        </div>
+
+        <div style="height: 25px; text-align: left; padding: 1px">
+            <ul style="overflow:hidden">
+                <li style="display: inline; margin-left:40px; padding: 5px"><a href="/" th:text="#{main.home}"></a></li>
+                <li style="display: inline; margin-left:40px" th:each="category: ${categories}">
+                    <a th:href="@{'/books/category/' + ${category.getId()}}" th:text="${category.getName()}"></a>
+                </li>
+            </ul>
+        </div>
+
+        <div style="margin: 0 auto; padding: 15px; text-align: center; float: left; background-color: #EDEDED">
+            <a th:each="book: ${books}" th:href="@{'/books/' + ${book.id}}">
+                <div style="width: 241px; height: 215px;  float: left">
+                    <div>
+                        <img th:if="${book.bookImages != null && !book.bookImages.isEmpty()}"
+                             th:src="@{/getImage(picName=${book.getBookImages().get(0).name})}" width="195"
+                             height="135"/>
+                        <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg"
+                             width="195" height="135"/>
+                        <b th:text="#{main.author}"></b> <span th:each="author: ${book.getAuthors()}"
+                                                               th:text="${author.name} + ' '+ ${author.surname} + ' '"></span><br>
+                        <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
     </div>
 </div>
 </body>

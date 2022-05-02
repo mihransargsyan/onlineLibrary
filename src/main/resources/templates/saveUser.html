@@ -6,26 +6,57 @@
 </head>
 <body>
 
-<div style="width: 1000px; margin: 0 auto; padding: 5px; text-align: center">
-    <b th:text="#{main.addUser}"> </b><br>
-<form action="/user/add" method="post">
-    <input th:if="${user != null}" type="hidden" th:value="${user.getId()}" name="id">
-    <b th:text="#{main.name}"> </b> <input type="text" name="name" th:value="${user == null} ? '' : ${user.name}"/> <br>
-    <b th:text="#{main.surname}"> </b> <input type="text" name="surname" th:value="${user == null} ? '' : ${user.surname}"/><br>
-    <b th:text="#{main.gender}"> </b> <select name="gender">
-    <option value="MALE" th:text="#{main.male}"> </option>
-    <option value="FEMALE" th:text="#{main.female}"> </option>
-</select><br>
-    <b th:text="#{main.phone}"> </b> <input type="text" name="phone" th:value="${user == null} ? '' : ${user.phone}"/><br>
-    <b th:text="#{main.email}"> </b> <input type="text" name="email" th:value="${user == null} ? '' : ${user.email}"/><br>
-    <b th:text="#{main.password}"> </b> <input type="password" name="password" th:value="${user == null} ? '' : ${user.password}"/><br>
-    <input type="submit" th:value="#{main.save}">
-</form>
-<span th:if="${user != null}" >
-    <a th:href="@{'/user/delete/'+ ${user.getId()}}"th:text="#{main.delete}">
-    </a>
-</span>
-</div>
+<div style="background-color: #EDEDED">
 
+    <div style="width: 1000px; margin: 0 auto; padding: 1px; background-color: #EDEDED">
+
+        <div style="height: 25px; text-align: right; padding: 1px">
+            <a href="?lang=hy">Հայերեն</a> | <a href="?lang=ru">Русский</a> | <a href="?lang=en">English</a>
+        </div>
+        <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
+            <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
+            | <a href="/" th:text="#{main.back}"></a>
+        </div>
+        <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser != null}">
+            <span th:text="#{main.welcome} +' '+ ${currentUser.user.name}"></span> | <a th:text="#{main.myBooks}"
+                                                                                        href="/myBooks"></a> | <a
+                th:text="#{main.addBook}" href="/books/add"></a> | <a th:text="#{main.myDetails}"
+                                                                      th:href="@{'/user/edit/' + ${currentUser.user.id}}"></a>
+            | <a th:text="#{main.logout}" href="/logout"></a> | <a href="/" th:text="#{main.back}"></a>
+        </div>
+
+        <div style="width: 1000px; margin: 0 auto; padding: 5px; text-align: center">
+            <div th:if="${errors != null && !errors.isEmpty()}">
+                <ul>
+                    <li style="color: red" th:each="error: ${errors}" th:text="${error}"></li>
+                </ul>
+            </div>
+            <br>
+
+            <b th:text="#{main.addUser}"> </b><br>
+            <form action="/user/add" method="post">
+                <input th:if="${user != null}" type="hidden" th:value="${user.getId()}" name="id">
+                <b th:text="#{main.name}"> </b> <input type="text" name="name"
+                                                       th:value="${user == null} ? '' : ${user.name}"/> <br>
+                <b th:text="#{main.surname}"> </b> <input type="text" name="surname"
+                                                          th:value="${user == null} ? '' : ${user.surname}"/><br>
+                <b th:text="#{main.gender}"> </b> <select name="gender">
+                <option value="MALE" th:text="#{main.male}"></option>
+                <option value="FEMALE" th:text="#{main.female}"></option>
+            </select><br>
+                <b th:text="#{main.phone}"> </b> <input type="number" name="phone"
+                                                        th:value="${user == null} ? '' : ${user.phone}"/><br>
+                <b th:text="#{main.email}"> </b> <input type="email" name="email"
+                                                        th:value="${user == null} ? '' : ${user.email}"/><br>
+                <b th:text="#{main.password}"> </b> <input type="password" name="password"
+                                                           th:value="${user == null} ? '' : ${user.password}"/><br>
+                <input type="submit" th:value="#{main.save}">
+            </form>
+            <span th:if="${currentUser != null}">
+             <a th:href="@{'/user/delete/'+ ${user.getId()}}" th:text="#{main.delete}"></a>
+           </span>
+        </div>
+    </div>
+</div>
 </body>
 </html>

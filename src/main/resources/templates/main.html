@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:C="http://www.w3.org/1999/xhtml"
+      xmlns:https="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{main.home}"></title>
@@ -25,58 +26,69 @@
 
 <body>
 
-<div style="width: 1000px; margin: 0 auto; padding: 1px">
+<div style="background-color: #EDEDED" >
 
-    <div>
-        <div style="height: 25px; text-align: right; padding: 1px">
-            <a href="?lang=hy">Հայերեն</a> | <a href="?lang=ru">Русский</a> | <a href="?lang=en">English</a>
-        </div>
-        <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
-            <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
+    <div style="width: 1000px; margin: 0 auto; padding: 1px; background-color: #EDEDED">
 
-        </div>
-        <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser != null}">
-            <span th:text="#{main.welcome} +' '+ ${currentUser.user.name}"></span> | <a th:text="#{main.myBooks}"
-                                                                                        href="/myBooks"></a> | <a
-                th:text="#{main.addBook}" href="/books/add"></a> | <a th:text="#{main.myDetails}"
-                                                                      th:href="@{'/user/edit/' + ${currentUser.user.id}}"></a>
-            | <a th:text="#{main.logout}" href="/logout"></a>
-        </div>
-    </div>
-
-    <div style="height: 25px; text-align: left; padding: 1px">
-        <ul style="overflow:hidden">
-            <li  style="display: inline; margin-left:40px; padding: 5px"><a href="/" th:text="#{main.home}"></a></li>
-            <li style="display: inline; margin-left:40px" th:each="category: ${categories}">
-                <a th:href="@{'/books/category/' + ${category.getId()}}" th:text="${category.getName()}"></a>
-            </li>
-        </ul>
-    </div>
-
-    <div style="margin: 0 auto; padding: 15px; text-align: center; float: left">
-        <a th:each="book: ${userPage.content}" th:href="@{'/books/' + ${book.id}}">
-            <div style="width: 241px; height: 215px;  float: left">
-                <div>
-                    <img th:if="${book.bookImages != null && !book.bookImages.isEmpty()}"
-                         th:src="@{/getImage(picName=${book.getBookImages().get(0).name})}" width="195" height="135"/>
-                    <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg"
-                         width="195" height="135"/>
-                    <b th:text="#{main.author}"></b> <span th:each="author: ${book.getAuthors()}"
-                                                           th:text="${author.name} + ' '+ ${author.surname} + ' '"></span><br>
-                    <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span>
-                </div>
+        <div>
+            <div style="height: 25px; text-align: right; padding: 1px">
+                <a href="?lang=hy">Հայերեն</a> | <a href="?lang=ru">Русский</a> | <a href="?lang=en">English</a>
+            </div>
+            <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser == null}">
+                <a href="/login" th:text="#{main.login}"></a> | <a href="/user/add" th:text="#{main.registration}"></a>
 
             </div>
-        </a>
-    </div>
+            <div style="height: 25px; text-align: center; padding: 1px">
+                <form action="/books/search" method="post">
+                    <input type="text" name="keyword"/> <input type="submit" th:value="#{main.search}"/>
+                </form>
+            </div>
+            <div style="height: 25px; text-align: right; padding: 1px" th:if="${currentUser != null}">
+                <span th:text="#{main.welcome} +' '+ ${currentUser.user.name}"></span> | <a th:text="#{main.myBooks}"
+                                                                                            href="/myBooks"></a> | <a
+                    th:text="#{main.addBook}" href="/books/add"></a> | <a th:text="#{main.myDetails}"
+                                                                          th:href="@{'/user/edit/' + ${currentUser.user.id}}"></a>
+                | <a th:text="#{main.logout}" href="/logout"></a>
+            </div>
+        </div>
 
-    <div style="margin: 0 auto; padding: 5px; text-align: center" th:if="${userPage.totalPages > 0}" class="pagination"
-         th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{/(size=${userPage.size}, page=${pageNumber - 1})}"
-           th:text=${pageNumber}
-           th:class="${pageNumber==userPage.number + 1} ? active"></a>
+        <div style="height: 25px; text-align: left; padding: 1px">
+            <ul style="overflow:hidden">
+                <li style="display: inline; margin-left:40px; padding: 5px"><a href="/" th:text="#{main.home}"></a></li>
+                <li style="display: inline; margin-left:40px" th:each="category: ${categories}">
+                    <a th:href="@{'/books/category/' + ${category.getId()}}" th:text="${category.getName()}"></a>
+                </li>
+            </ul>
+        </div>
+
+        <div style="margin: 0 auto; padding: 15px; text-align: center; float: left">
+
+            <a th:each="book: ${userPage.content}" th:href="@{'/books/' + ${book.id}}">
+                <div style="width: 241px; height: 215px;  float: left">
+                    <div>
+                        <img th:if="${book.bookImages != null && !book.bookImages.isEmpty()}"
+                             th:src="@{/getImage(picName=${book.getBookImages().get(0).name})}" width="195"
+                             height="135"/>
+                        <img th:if="${book.bookImages == null || book.bookImages.isEmpty()}" src="/img/images.jpg"
+                             width="195" height="135"/>
+                        <b th:text="#{main.author}"></b> <span th:each="author: ${book.getAuthors()}"
+                                                               th:text="${author.name} + ' '+ ${author.surname} + ' '"></span><br>
+                        <b th:text="#{main.title}"></b> <span th:text="${book.title}"></span>
+                    </div>
+
+                </div>
+            </a>
+
+        </div>
+
+        <div style="margin: 0 auto; padding: 5px; text-align: center" th:if="${userPage.totalPages > 0}"
+             class="pagination"
+             th:each="pageNumber : ${pageNumbers}">
+            <a th:href="@{/(size=${userPage.size}, page=${pageNumber - 1})}"
+               th:text=${pageNumber}
+               th:class="${pageNumber==userPage.number + 1} ? active"></a>
+        </div>
     </div>
 </div>
-
 </body>
 </html>

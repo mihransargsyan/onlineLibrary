@@ -71,6 +71,9 @@ public class BookService {
         return bookRepository.findAllByUser(user);
     }
 
+    public List<Book> findBooksByTitle(String keyword) {
+        return bookRepository.findAllByTitle(keyword);
+    }
 
     private List<Category> getCategoriesFromRequest(List<Integer> categoriesIds) {
         List<Category> categories = new ArrayList<>();
@@ -79,7 +82,6 @@ public class BookService {
         }
         return categories;
     }
-
 
     private List<Author> getAuthorsFromRequest(List<Integer> authorsIds) {
         List<Author> authors = new ArrayList<>();
@@ -92,14 +94,16 @@ public class BookService {
     private void saveBookImages(MultipartFile[] uploadedFiles, Book book) throws IOException {
         if (uploadedFiles.length != 0) {
             for (MultipartFile uploadedFile : uploadedFiles) {
-                String fileName = System.currentTimeMillis() + "_" + uploadedFile.getOriginalFilename();
-                File newFile = new File(imagePath + fileName);
-                uploadedFile.transferTo(newFile);
-                BookImage bookImage = BookImage.builder()
-                        .name(fileName)
-                        .book(book)
-                        .build();
-                bookImageRepository.save(bookImage);
+                if(!uploadedFile.isEmpty() && uploadedFile.getName().equals("")){
+                    String fileName = System.currentTimeMillis() + "_" + uploadedFile.getOriginalFilename();
+                    File newFile = new File(imagePath + fileName);
+                    uploadedFile.transferTo(newFile);
+                    BookImage bookImage = BookImage.builder()
+                            .name(fileName)
+                            .book(book)
+                            .build();
+                    bookImageRepository.save(bookImage);
+                }
             }
         }
     }
