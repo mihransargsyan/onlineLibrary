@@ -69,7 +69,7 @@ public class BookController {
 
     @PostMapping("/books/add")
     public String addBook(@ModelAttribute CreateBookRequest createBookRequest,
-                          @RequestParam("pictures") MultipartFile[] uploadedFiles,
+                          @RequestParam("pictures") MultipartFile[] uploadedImages,
                           @RequestParam("pdf") MultipartFile uploadedPdf,
                           @AuthenticationPrincipal CurrentUser currentUser,
                           ModelMap map) {
@@ -103,7 +103,7 @@ public class BookController {
             return "saveBook";
         }
         try {
-            bookService.addBook(book, uploadedFiles, uploadedPdf, currentUser.getUser(), createBookRequest.getCategories(), createBookRequest.getAuthors());
+            bookService.addBook(book, uploadedImages, uploadedPdf, currentUser.getUser(), createBookRequest.getCategories(), createBookRequest.getAuthors());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

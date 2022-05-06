@@ -34,14 +34,14 @@ public class BookService {
     @Value("${books.upload.pathBookPdf}")
     private String pdfPath;
 
-    public Book addBook(Book book, MultipartFile[] uploadedFiles, MultipartFile uploadedPdf, User user, List<Integer> categories, List<Integer> authors) throws IOException {
+    public Book addBook(Book book, MultipartFile[] uploadedImages, MultipartFile uploadedPdf, User user, List<Integer> categories, List<Integer> authors) throws IOException {
         List<Category> categoriesFromDB = getCategoriesFromRequest(categories);
         List<Author> authorsFromDB = getAuthorsFromRequest(authors);
         book.setUser(user);
         book.setCategories(categoriesFromDB);
         book.setAuthors(authorsFromDB);
         save(book);
-        saveBookImages(uploadedFiles, book);
+        saveBookImg(uploadedImages, book);
         saveBookPdf(uploadedPdf, book);
         return book;
     }
@@ -91,20 +91,19 @@ public class BookService {
         return authors;
     }
 
-    private void saveBookImages(MultipartFile[] uploadedFiles, Book book) throws IOException {
+    private void saveBookImg(MultipartFile[] uploadedFiles, Book book) throws IOException {
         if (uploadedFiles.length != 0) {
             for (MultipartFile uploadedFile : uploadedFiles) {
-                if(!uploadedFile.isEmpty() && uploadedFile.getName().equals("")){
-                    String fileName = System.currentTimeMillis() + "_" + uploadedFile.getOriginalFilename();
-                    File newFile = new File(imagePath + fileName);
-                    uploadedFile.transferTo(newFile);
-                    BookImage bookImage = BookImage.builder()
-                            .name(fileName)
-                            .book(book)
-                            .build();
-                    bookImageRepository.save(bookImage);
-                }
+                String fileName = System.currentTimeMillis() + "_" + uploadedFile.getOriginalFilename();
+                File newFile = new File(imagePath + fileName);
+                uploadedFile.transferTo(newFile);
+                BookImage bookImage = BookImage.builder()
+                        .name(fileName)
+                        .book(book)
+                        .build();
+                bookImageRepository.save(bookImage);
             }
+
         }
     }
 
